@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Guess That Animal</title>
+    <title>My Favorite Animal Sounds</title>
     <style>
-        /* Make html and body fill the viewport */
         html, body {
             height: 100%;
             margin: 0;
@@ -14,26 +13,24 @@
             color: white;
         }
 
-        /* Full-page background image */
         body {
-            background-image: url('sounds/sbwf.jpg'); /* path to your background */
-            background-size: cover;       /* cover entire viewport */
-            background-position: center;  /* center the image */
-            background-repeat: no-repeat; /* avoid tiling */
+            background-image: url('sounds/sbwf.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* content starts from top by default */
+            justify-content: flex-start;
             align-items: center;
         }
 
-        /* Optional overlay for better readability */
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.4); /* dark overlay */
+            background-color: rgba(0,0,0,0.4);
             z-index: -1;
         }
 
@@ -46,9 +43,9 @@
         #buttons {
             margin-top: 40px;
             display: flex;
-            flex-wrap: wrap;           /* wrap buttons if screen is narrow */
-            justify-content: center;    /* center horizontally */
-            gap: 15px;                 /* space between buttons */
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
         }
 
         .sound-btn {
@@ -66,7 +63,6 @@
             transform: scale(0.95);
         }
 
-        /* Ensure content never goes off-screen on small devices */
         @media (max-height: 600px) {
             h1 {
                 font-size: 2em;
@@ -79,15 +75,23 @@
     </style>
 </head>
 <body>
-    <h1>Guess That Animal</h1>
+    <h1>My Favorite Animal Sounds</h1>
     <div id="buttons">Loading sounds...</div>
 
     <script>
     async function loadSounds() {
         const container = document.getElementById("buttons");
 
+        // Map of filenames to custom button labels
+        const labels = {
+            "cow.mp3": "Animal A",
+            "cat.mp3": "Animal B",
+            "puppy.mp3": "Animal C",
+            "sheep.mp3": "Animal D",
+            "chicken.mp3": "Animal E"
+        };
+
         try {
-            // Load the list of sounds from sounds.json
             const res = await fetch("sounds/sounds.json");
             const files = await res.json();
 
@@ -96,7 +100,7 @@
             files.forEach(file => {
                 const btn = document.createElement("button");
                 btn.className = "sound-btn";
-                btn.textContent = file.replace(".mp3", "");
+                btn.textContent = labels[file] || file.replace(".mp3", "");
                 btn.onclick = () => new Audio("sounds/" + file).play();
                 container.appendChild(btn);
             });

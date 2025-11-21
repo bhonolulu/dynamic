@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animal Soundboard</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        .sound-btn { margin: 10px; padding: 20px 40px; font-size: 18px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Animal Soundboard</h1>
+    <div id="buttons">Loading sounds...</div>
+
+    <script>
+    async function loadSounds() {
+        const container = document.getElementById("buttons");
+
+        try {
+            const res = await fetch("sounds/sounds.json");
+            const files = await res.json();
+
+            container.innerHTML = "";
+
+            files.forEach(file => {
+                const btn = document.createElement("button");
+                btn.className = "sound-btn";
+                btn.textContent = file.replace(".mp3", "");
+                btn.onclick = () => new Audio("sounds/" + file).play();
+                container.appendChild(btn);
+            });
+
+        } catch (err) {
+            container.innerHTML = "Error loading sounds.json: " + err;
+        }
+    }
+
+    loadSounds();
+    </script>
+</body>
+</html>

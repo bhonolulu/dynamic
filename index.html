@@ -14,7 +14,7 @@
         }
 
         body {
-            background-image: url('sounds/sbwf.jpg');
+            background-image: url('sounds/sbwf.jpg'); /* background image */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -24,6 +24,7 @@
             align-items: center;
         }
 
+        /* Dark overlay for readability */
         body::before {
             content: "";
             position: fixed;
@@ -82,26 +83,18 @@
     async function loadSounds() {
         const container = document.getElementById("buttons");
 
-        // Map of filenames to custom button labels
-        const labels = {
-            "cow.mp3": "Animal A",
-            "cat.mp3": "Animal B",
-            "puppy.mp3": "Animal C",
-            "sheep.mp3": "Animal D",
-            "chicken.mp3": "Animal E"
-        };
-
         try {
+            // Load the list of sounds from sounds.json
             const res = await fetch("sounds/sounds.json");
             const files = await res.json();
 
             container.innerHTML = "";
 
-            files.forEach(file => {
+            files.forEach(item => {
                 const btn = document.createElement("button");
                 btn.className = "sound-btn";
-                btn.textContent = labels[file] || file.replace(".mp3", "");
-                btn.onclick = () => new Audio("sounds/" + file).play();
+                btn.textContent = item.label;                // display custom label
+                btn.onclick = () => new Audio("sounds/" + item.file).play(); // play MP3
                 container.appendChild(btn);
             });
 
